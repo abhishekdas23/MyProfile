@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Abhishek Das — Staff ML & Distributed Systems Engineer. Agentic inference at enterprise scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>:root{color-scheme:light}*{margin:0;padding:0}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Abhishek Das</title>
+<style>
+  /* Layout: single column, generous measure; mono utility labels + azure accent on a cool slate neutral */
+  :root{
+    --bg:#f6f8fb; --surface:#ffffff; --surface-2:#eef2f7;
+    --fg:#0e141b; --muted:#56616f; --faint:#8a94a2;
+    --line:#e1e7ee; --accent:#235fd6; --accent-ink:#235fd6;
+    --shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px rgba(16,24,40,.06);
+    --fs-display:clamp(2.3rem,6.2vw,3.6rem);
+    --fs-h2:clamp(1.15rem,2.6vw,1.4rem);
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --head:"Space Grotesk",var(--sans);
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0a0e13; --surface:#111822; --surface-2:#0f1620;
+    --fg:#e7edf5; --muted:#9aa6b5; --faint:#6b7585;
+    --line:#1d2630; --accent:#6aa0ff; --accent-ink:#8fb6ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0a0e13; --surface:#111822; --surface-2:#0f1620;
+    --fg:#e7edf5; --muted:#9aa6b5; --faint:#6b7585;
+    --line:#1d2630; --accent:#6aa0ff; --accent-ink:#8fb6ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;font-size:15px}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+    background:var(--surface);z-index:30}
+  .wrap{max-width:940px;margin:0 auto;
+    padding-left:max(20px,env(safe-area-inset-left,0px));
+    padding-right:max(20px,env(safe-area-inset-right,0px))}
+  a{color:var(--accent-ink);text-decoration:none}
+  a:hover{text-decoration:underline}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+
+  /* header */
+  header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+    background:color-mix(in srgb,var(--surface) 88%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding-block:.7rem}
+  .brand{font-family:var(--head);font-weight:600;letter-spacing:-.01em;font-size:1rem}
+  .brand span{color:var(--accent-ink)}
+  nav{display:flex;gap:1.15rem;align-items:center}
+  nav a{color:var(--muted);font-size:.82rem;font-family:var(--mono)}
+  nav a:hover{color:var(--fg);text-decoration:none}
+  .nlink{display:none}
+  @media(min-width:680px){.nlink{display:inline}}
+  .tog{background:none;border:1px solid var(--line);color:var(--muted);
+    width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:.9rem;line-height:1;
+    display:grid;place-items:center}
+  .tog:hover{color:var(--fg);border-color:var(--accent)}
+
+  /* hero */
+  .hero{padding-top:clamp(2.6rem,7vw,4.4rem);padding-bottom:1.4rem}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent-ink);margin:0 0 1rem}
+  h1{font-family:var(--head);font-size:var(--fs-display);line-height:1.02;letter-spacing:-.025em;
+    font-weight:600;margin:0;text-wrap:balance}
+  .role{font-family:var(--head);font-size:clamp(1.05rem,2.8vw,1.3rem);font-weight:500;
+    color:var(--fg);margin:.75rem 0 0}
+  .lede{color:var(--muted);max-width:62ch;margin:1rem 0 0;font-size:1.02rem}
+  .meta{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-top:1.3rem;
+    font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+  .meta span{display:inline-flex;align-items:center;gap:.4rem}
+  .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+
+  /* stat band */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:2rem}
+  @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);padding:1.1rem 1rem}
+  .stat b{display:block;font-family:var(--head);font-size:clamp(1.3rem,3.6vw,1.7rem);
+    font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat small{color:var(--muted);font-size:.74rem;font-family:var(--mono);
+    text-transform:uppercase;letter-spacing:.06em}
+
+  /* sections */
+  section{padding-block:clamp(2.2rem,5vw,3.2rem);border-top:1px solid var(--line)}
+  .s-head{display:flex;align-items:baseline;gap:.8rem;margin:0 0 1.6rem}
+  .s-head h2{font-family:var(--head);font-size:var(--fs-h2);font-weight:600;letter-spacing:-.01em;margin:0}
+  .s-head .no{font-family:var(--mono);font-size:.75rem;color:var(--faint)}
+
+  /* experience */
+  .job{display:grid;grid-template-columns:168px 1fr;gap:1.4rem;padding-block:1.3rem;
+    border-top:1px dashed var(--line)}
+  .job:first-of-type{border-top:0;padding-top:.2rem}
+  @media(max-width:620px){.job{grid-template-columns:1fr;gap:.5rem}}
+  .job .when{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:.2rem}
+  .job h3{font-family:var(--head);font-size:1.05rem;font-weight:600;margin:0}
+  .job .org{color:var(--accent-ink);font-weight:500}
+  .job ul{margin:.6rem 0 0;padding-left:1.05rem;color:var(--muted)}
+  .job li{margin:.3rem 0}
+  .job li b{color:var(--fg);font-weight:600}
+
+  /* cards */
+  .grid{display:grid;gap:1rem}
+  .two{grid-template-columns:1fr 1fr}
+  @media(max-width:620px){.two{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:13px;
+    padding:1.15rem 1.2rem;box-shadow:var(--shadow)}
+  .card .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink)}
+  .card h3{font-family:var(--head);font-size:1rem;font-weight:600;margin:.5rem 0 .4rem}
+  .card p{margin:0;color:var(--muted);font-size:.92rem}
+  .card .cite{margin-top:.7rem;font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+  .pill{display:inline-block;margin-top:.55rem;font-family:var(--mono);font-size:.68rem;
+    padding:.12rem .5rem;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .pill.ok{color:var(--accent-ink);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+
+  /* judging list */
+  .lead-judge{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+  @media(max-width:620px){.lead-judge{grid-template-columns:1fr}}
+  .roles{display:flex;flex-direction:column;gap:.1rem}
+  .role-row{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:baseline;
+    padding:.7rem 0;border-top:1px solid var(--line)}
+  .role-row .r-name{font-weight:500}
+  .role-row .r-name small{display:block;color:var(--muted);font-weight:400;font-size:.85rem;
+    font-family:var(--sans)}
+  .role-row .r-when{font-family:var(--mono);font-size:.74rem;color:var(--faint);white-space:nowrap}
+
+  /* skills */
+  .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+  @media(max-width:620px){.skills{grid-template-columns:1fr}}
+  .skillrow{padding:.85rem 0;border-top:1px solid var(--line)}
+  .skillrow:first-child,.skillrow:nth-child(2){border-top:0}
+  .skillrow .k{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.07em;color:var(--faint)}
+  .skillrow .v{margin-top:.25rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.35rem}
+  .chip{font-size:.8rem;font-family:var(--mono);padding:.2rem .55rem;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--fg)}
+
+  /* contact */
+  .contact-row{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:.4rem}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.82rem;
+    padding:.55rem .9rem;border-radius:9px;border:1px solid var(--line);background:var(--surface);
+    color:var(--fg);cursor:pointer}
+  .btn:hover{border-color:var(--accent);text-decoration:none}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .copied{font-family:var(--mono);font-size:.75rem;color:var(--accent-ink)}
+  footer{border-top:1px solid var(--line);padding-block:1.6rem;color:var(--faint);
+    font-family:var(--mono);font-size:.74rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+  .edu{display:flex;flex-direction:column;gap:.7rem}
+  .edu .row{display:grid;grid-template-columns:1fr auto;gap:.8rem;align-items:baseline}
+  .edu .deg{font-weight:500}
+  .edu .inst{color:var(--muted);font-size:.9rem}
+  .edu .yr{font-family:var(--mono);font-size:.76rem;color:var(--faint)}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+  html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">Abhishek&nbsp;<span>Das</span></div>
+    <nav>
+      <a class="nlink" href="#work">work</a>
+      <a class="nlink" href="#patents">patents</a>
+      <a class="nlink" href="#judging">peer&nbsp;review</a>
+      <a class="nlink" href="#contact">contact</a>
+      <button class="tog" id="themeBtn" aria-label="Toggle theme" title="Toggle light/dark">◑</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="border-top:0">
+    <p class="eyebrow">Staff ML &amp; Distributed Systems Engineer</p>
+    <h1>Agentic inference, built for enterprise scale.</h1>
+    <p class="role">Salesforce AI Platform · Bellevue, WA</p>
+    <p class="lede">I build second-generation DAG-based agentic inference platforms — the Agent Graph / Agent Harness — scaling multi-tenant inference to 25M+ requests a day under strict latency SLOs, with customer-defined reasoning across heterogeneous CPU/GPU substrates and model providers.</p>
+    <div class="meta">
+      <span><i class="dot"></i>Granted US patent · 52 forward citations</span>
+      <span><i class="dot"></i>Granted LLM patent (Flow GPT)</span>
+      <span><i class="dot"></i>Research-sprint judge &amp; reviewer</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>25M+</b><small>Requests / day</small></div>
+      <div class="stat"><b>100M+</b><small>Node executions</small></div>
+      <div class="stat"><b>60+</b><small>Custom nodes</small></div>
+      <div class="stat"><b>7</b><small>Internal teams</small></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="s-head"><span class="no">01</span><h2>Selected experience</h2></div>
+
+    <div class="job">
+      <div class="when">Sep 2021 — Present<br>Software Engineer Lead</div>
+      <div>
+        <h3>Salesforce <span class="org">· AI Platform</span></h3>
+        <ul>
+          <li><b>Defined the platform strategy and North Star</b> for ML inference services with principal architects and product leadership.</li>
+          <li><b>Architected a second-generation DAG-based inference platform</b> for multi-step ML and agentic workflows, adopted across multiple internal teams.</li>
+          <li><b>Designed and led the BYO Node/Tool/Code initiative</b> for the Agent Harness — customers integrate custom nodes into the Agent Graph for deterministic, bespoke reasoning with harness-provided orchestration, governance, and isolation.</li>
+          <li>Built a <b>plugin ecosystem of 60+ custom nodes</b> powering reply recommendations, intent &amp; polarity classification, case classification, and code generation.</li>
+          <li>Scaled <b>multi-tenant, low-latency inference</b> to tens of millions of requests/day for predictive and generative workloads; developed LLM hosting including Code Generation and Flow GPTs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">Jan 2017 — Sep 2021<br>Senior SWE / Tech Lead</div>
+      <div>
+        <h3>Microsoft <span class="org">· Azure</span></h3>
+        <ul>
+          <li>Led a <b>globally distributed team of 12+ engineers</b> delivering Azure's bare-metal control plane for Nutanix, expanding Azure's enterprise cloud offerings.</li>
+          <li>Drove multi-year <b>technical direction and roadmap</b> for Azure Dedicated, partnering with product leadership.</li>
+          <li>On Azure Stream Analytics, led <b>control-plane initiatives for dedicated clusters and edge devices</b>, and designed the control-plane orchestrator state machine for analytic-job lifecycle and reliable autoscaling.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">2012 — 2017<br>Software Engineer</div>
+      <div>
+        <h3>Groupon <span class="org">· &amp; EMC Corporation</span></h3>
+        <ul>
+          <li>At Groupon, led migration of the core <b>display-ads bidding engine from Teradata to HDFS</b> and built a real-time attribution pipeline.</li>
+          <li>At EMC, designed a high-performance <b>Hyper-V multi-proxy backup architecture</b> for Avamar and Networker, balancing load across proxies for parallel backups.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="patents">
+    <div class="s-head"><span class="no">02</span><h2>Patents &amp; recognition</h2></div>
+    <div class="grid two">
+      <div class="card">
+        <span class="tag">Granted · USPTO</span>
+        <h3>Optimizing backup across multi-proxy clusters</h3>
+        <p>Load-balanced backup across clusters with multiple proxy servers, improving parallelism and throughput for enterprise data protection.</p>
+        <span class="pill ok">US 9,639,428 B1</span>
+        <span class="pill">52 forward citations</span>
+        <p class="cite">Cited by Microsoft, IBM, Commvault, Nutanix &amp; Rubrik — sustained influence 2016–2026.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Granted · USPTO</span>
+        <h3>Large Language Models for Flow Architecture Design</h3>
+        <p>LLM-driven generation of flow architectures — the "Flow GPT" line of work underpinning agentic, low-latency generative inference on the platform.</p>
+        <span class="pill ok">US 12,705,433 B2</span>
+        <span class="pill">Co-inventor</span>
+      </div>
+      <div class="card">
+        <span class="tag">Award</span>
+        <h3>EMC Award of Excellence</h3>
+        <p>For resolving critical blocking issues and delivering a customer-impacting release on time.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Honor</span>
+        <h3>Undergraduate merit scholarship</h3>
+        <p>Awarded for ranking among the top 10% at admission and top 1% in the state.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="judging">
+    <div class="s-head"><span class="no">03</span><h2>Peer review &amp; research judging</h2></div>
+
+    <div class="lead-judge">
+      <div class="card">
+        <span class="tag">Research reviewing</span>
+        <h3>Apart Research — Research-sprint judge</h3>
+        <p>Invited expert judge for two international AI-safety research sprints: the <b>Global South AI Safety Hackathon</b> (217 projects, panel of 104) and the <b>Secret Loyalties Hackathon</b> (179 projects, panel of 53). Reviewed empirical research reports against a defined rubric and returned written feedback to each team.</p>
+        <span class="pill ok">Expert-gated selection</span>
+        <span class="pill">2026</span>
+      </div>
+      <div class="card">
+        <span class="tag">Workshop reviewer</span>
+        <h3>CV4DC — Official reviewer</h3>
+        <p>Invited by the program chair to review submissions for the Computer Vision for Developing Countries workshop, affiliated with <b>ICCV</b> and <b>ACCV</b> and sponsored by the <b>Artificial Intelligence Journal (AIJ)</b>.</p>
+        <span class="pill ok">Chair invitation</span>
+        <span class="pill">OpenReview</span>
+      </div>
+    </div>
+
+    <div class="roles">
+      <div class="role-row"><div class="r-name">Dell × NVIDIA Hackathon<small>Expert judge · Seattle</small></div><div class="r-when">2026</div></div>
+      <div class="role-row"><div class="r-name">Multi Model Hackathon<small>Expert judge · SF Tech Week, San Francisco</small></div><div class="r-when">2026</div></div>
+      <div class="role-row"><div class="r-name">Cursor Buildathon Colombo<small>Judge · 600+ builders, 20+ universities</small></div><div class="r-when">2026</div></div>
+      <div class="role-row"><div class="r-name">Z.ai Builder Week — Build with GLM<small>Judge · panel of experts</small></div><div class="r-when">2026</div></div>
+      <div class="role-row"><div class="r-name">AI Agents Hackathon with Kiro<small>Judge · Open Source for AI</small></div><div class="r-when">2026</div></div>
+      <div class="role-row"><div class="r-name">Vibe Awards<small>Judge · Venture Miner</small></div><div class="r-when">2026</div></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="s-head"><span class="no">04</span><h2>Technical focus</h2></div>
+    <div class="skills">
+      <div class="skillrow">
+        <div class="k">Systems &amp; leadership</div>
+        <div class="chips"><span class="chip">Scalable ML systems</span><span class="chip">Distributed systems</span><span class="chip">Cloud architecture</span><span class="chip">Roadmap &amp; technical vision</span></div>
+      </div>
+      <div class="skillrow">
+        <div class="k">ML platforms</div>
+        <div class="chips"><span class="chip">PyTorch</span><span class="chip">vLLM</span><span class="chip">Ray (Serve &amp; Data)</span><span class="chip">LangGraph</span><span class="chip">SageMaker</span></div>
+      </div>
+      <div class="skillrow">
+        <div class="k">Infrastructure</div>
+        <div class="chips"><span class="chip">Kubernetes</span><span class="chip">Spark</span><span class="chip">Airflow</span><span class="chip">Service Fabric</span><span class="chip">Azure</span><span class="chip">AWS</span></div>
+      </div>
+      <div class="skillrow">
+        <div class="k">Languages</div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">Scala</span><span class="chip">C++</span><span class="chip">C#</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="s-head"><span class="no">05</span><h2>Education</h2></div>
+    <div class="edu">
+      <div class="row"><div><span class="deg">M.S., Computer Science</span><div class="inst">Texas A&amp;M University, College Station</div></div><div class="yr">2012</div></div>
+      <div class="row"><div><span class="deg">B.Tech, Computer Science &amp; Engineering</span><div class="inst">Odisha University of Technology &amp; Research, India</div></div><div class="yr">2009</div></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="s-head"><span class="no">06</span><h2>Contact</h2></div>
+    <p class="lede" style="margin-top:0">Open to conversations on ML inference infrastructure, agentic systems, and research collaboration.</p>
+    <div class="contact-row">
+      <button class="btn primary" id="copyEmail" data-email="das.abhishek@outlook.com">Copy email</button>
+      <span class="btn" id="emailText">das.abhishek@outlook.com</span>
+      <a class="btn" href="https://www.linkedin.com/in/adas5" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <span class="copied" id="copiedMsg" hidden>Copied ✓</span>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>Abhishek Das · Bellevue, WA</span>
+  <span>ML &amp; Distributed Systems</span>
+</footer>
+
+<script>
+(function(){
+  // theme toggle (per-viewer convenience; falls back silently)
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  try{var saved=localStorage.getItem('ad-theme'); if(saved)root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    var isDark = cur ? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
+    var next=isDark?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('ad-theme',next);}catch(e){}
+  });
+
+  // copy email with fallback to selection
+  var copy=document.getElementById('copyEmail'), msg=document.getElementById('copiedMsg');
+  copy.addEventListener('click',function(){
+    var em=copy.getAttribute('data-email');
+    function ok(){msg.hidden=false;setTimeout(function(){msg.hidden=true;},2000);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(em).then(ok).catch(select);
+    }else select();
+    function select(){
+      var t=document.getElementById('emailText'),r=document.createRange();
+      r.selectNodeContents(t);var s=getSelection();s.removeAllRanges();s.addRange(r);ok();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
